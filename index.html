@@ -413,6 +413,7 @@
     // State
     let activeProfile = 'sabahat';
     let targetTunnelUrl = null;
+    let gistAccessKey = '';
     let pendingContext = null;
     let redirectCountdownInterval = null;
     let countdownRemaining = 8;
@@ -492,7 +493,12 @@
       const destParams = new URLSearchParams(searchParams);
       destParams.set('profile', activeProfile);
 
-      const destUrl = `${cleanTunnel}${cleanSubpath}?${destParams.toString()}${accessKey ? '#key=' + accessKey : ''}`;
+      const resolvedKey = accessKey || gistAccessKey || localStorage.getItem('easy_access_key') || '';
+      if (resolvedKey) {
+        destParams.set('key', resolvedKey);
+      }
+
+      const destUrl = `${cleanTunnel}${cleanSubpath}?${destParams.toString()}${resolvedKey ? '#key=' + resolvedKey : ''}`;
       setStatus('Redirecting...', `Connecting to ${cleanTunnel}...`, false);
       window.location.replace(destUrl);
     }
@@ -547,6 +553,10 @@
           const tunnelFile = gistData.files && gistData.files['easy_tunnel.json'];
           if (tunnelFile && tunnelFile.content) {
             const parsed = JSON.parse(tunnelFile.content);
+            if (parsed.accessKey) {
+              gistAccessKey = parsed.accessKey;
+              localStorage.setItem('easy_access_key', parsed.accessKey);
+            }
             if (parsed.tunnelUrl) {
               localStorage.setItem('last_tunnel_url', parsed.tunnelUrl);
               return parsed.tunnelUrl;
@@ -563,6 +573,10 @@
         const rawRes = await fetch(rawUrl, { cache: 'no-store' });
         if (rawRes.ok) {
           const parsed = await rawRes.json();
+          if (parsed.accessKey) {
+            gistAccessKey = parsed.accessKey;
+            localStorage.setItem('easy_access_key', parsed.accessKey);
+          }
           if (parsed.tunnelUrl) {
             localStorage.setItem('last_tunnel_url', parsed.tunnelUrl);
             return parsed.tunnelUrl;
