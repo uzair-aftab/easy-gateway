@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Easy — Canadian PEBC Revision Gateway</title>
   <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#0f172a">
+  <meta name="theme-color" content="#090d16">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Easy PEBC">
@@ -17,6 +17,7 @@
     }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: radial-gradient(circle at top center, #0f172a 0%, #090d16 100%);
       background-color: #090d16;
       color: #f8fafc;
       min-height: 100vh;
@@ -24,18 +25,21 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 1.5rem;
+      padding: 1.25rem;
       -webkit-font-smoothing: antialiased;
     }
     .card {
-      background: #0f172a;
-      border: 1px solid #1e293b;
-      border-radius: 1.25rem;
-      padding: 2rem;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(51, 65, 85, 0.6);
+      border-radius: 1.5rem;
+      padding: 1.75rem;
       width: 100%;
       max-width: 440px;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
       text-align: center;
+      position: relative;
     }
     .logo-container {
       display: inline-flex;
@@ -43,10 +47,11 @@
       justify-content: center;
       width: 4rem;
       height: 4rem;
-      border-radius: 1rem;
+      border-radius: 1.125rem;
       background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.2);
-      margin-bottom: 1.25rem;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      margin-bottom: 1rem;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
     }
     .logo-pulse {
       animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -59,14 +64,14 @@
       font-size: 1.5rem;
       font-weight: 700;
       letter-spacing: -0.025em;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.35rem;
       color: #f1f5f9;
     }
     p.subtitle {
       font-size: 0.875rem;
       color: #94a3b8;
       line-height: 1.5;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
     }
     .badge-status {
       display: inline-flex;
@@ -74,9 +79,9 @@
       gap: 0.5rem;
       font-size: 0.75rem;
       font-weight: 600;
-      padding: 0.35rem 0.75rem;
+      padding: 0.35rem 0.85rem;
       border-radius: 9999px;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1rem;
       background: #1e293b;
       color: #cbd5e1;
       border: 1px solid #334155;
@@ -85,7 +90,9 @@
       width: 0.5rem;
       height: 0.5rem;
       border-radius: 9999px;
-      background: #f59e0b;
+      background: #10b981;
+    }
+    .badge-dot.pulse {
       animation: blink 1.5s ease-in-out infinite;
     }
     @keyframes blink {
@@ -98,63 +105,167 @@
       gap: 0.5rem;
       background: #020617;
       padding: 0.25rem;
-      border-radius: 0.75rem;
+      border-radius: 0.875rem;
       border: 1px solid #1e293b;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
     }
     .profile-btn {
-      padding: 0.5rem;
+      padding: 0.625rem;
       font-size: 0.8125rem;
       font-weight: 600;
       border: none;
-      border-radius: 0.5rem;
+      border-radius: 0.625rem;
       cursor: pointer;
       background: transparent;
       color: #64748b;
-      transition: all 0.15s ease;
+      transition: all 0.2s ease;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
     }
     .profile-btn.active.sabahat {
       background: #10b981;
       color: #022c22;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.35);
     }
     .profile-btn.active.uzair {
       background: #0ea5e9;
       color: #082f49;
+      box-shadow: 0 0 15px rgba(14, 165, 233, 0.35);
     }
+
+    /* PWA Install Guide Banner */
+    .pwa-guide-box {
+      display: none;
+      background: rgba(2, 6, 23, 0.7);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 1rem;
+      padding: 1.125rem;
+      margin-bottom: 1.25rem;
+      text-align: left;
+      box-shadow: inset 0 0 20px rgba(16, 185, 129, 0.05);
+    }
+    .pwa-guide-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #34d399;
+      margin-bottom: 0.5rem;
+    }
+    .pwa-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      font-size: 0.8125rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
+    .pwa-step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 9999px;
+      background: #10b981;
+      color: #022c22;
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+    .inline-icon {
+      display: inline-flex;
+      vertical-align: middle;
+      margin: 0 0.15rem;
+    }
+    .pwa-note {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px dashed #1e293b;
+    }
+
     .btn-action {
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 0.5rem;
       width: 100%;
       min-height: 48px;
       padding: 0.75rem 1.25rem;
       font-size: 0.9375rem;
-      font-weight: 600;
+      font-weight: 700;
       border-radius: 0.75rem;
       border: none;
       cursor: pointer;
       background: #10b981;
       color: #022c22;
-      transition: background-color 0.15s ease;
+      transition: all 0.2s ease;
       text-decoration: none;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
     }
     .btn-action:hover {
       background: #059669;
+      transform: translateY(-1px);
+    }
+    .btn-action:active {
+      transform: translateY(0);
+    }
+    .btn-action.uzair-theme {
+      background: #0ea5e9;
+      color: #082f49;
+      box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25);
+    }
+    .btn-action.uzair-theme:hover {
+      background: #0284c7;
+    }
+
+    /* Countdown indicator */
+    .countdown-container {
+      margin-top: 1rem;
+      display: none;
+    }
+    .countdown-label {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-bottom: 0.35rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .countdown-pause {
+      background: none;
+      border: none;
+      color: #64748b;
+      font-size: 0.75rem;
+      text-decoration: underline;
+      cursor: pointer;
     }
     .countdown-bar {
       height: 4px;
       width: 100%;
       background: #1e293b;
-      border-radius: 2px;
+      border-radius: 9999px;
       overflow: hidden;
-      margin-top: 1rem;
     }
     .countdown-progress {
       height: 100%;
       background: #10b981;
       width: 100%;
-      transform-origin: left;
+      transition: width 1s linear;
     }
+
     .details-toggle {
       margin-top: 1.25rem;
       font-size: 0.75rem;
@@ -163,6 +274,8 @@
       border: none;
       cursor: pointer;
       text-decoration: underline;
+      padding: 0.5rem;
+      min-height: 36px;
     }
     .advanced-panel {
       display: none;
@@ -201,7 +314,7 @@
     </div>
 
     <div class="badge-status" id="status-badge">
-      <span class="badge-dot" id="status-dot"></span>
+      <span class="badge-dot pulse" id="status-dot"></span>
       <span id="status-text">Connecting to Study Companion...</span>
     </div>
 
@@ -219,12 +332,59 @@
       </button>
     </div>
 
-    <button type="button" class="btn-action" id="btn-primary" onclick="triggerDiscovery(true)">
-      Retry Connection
+    <!-- PWA Install Guide Banner (Shown on mobile Safari/browser) -->
+    <div class="pwa-guide-box" id="pwa-guide-box">
+      <div class="pwa-guide-header">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+          <line x1="12" y1="18" x2="12.01" y2="18"/>
+        </svg>
+        <span>Add to iPhone Home Screen</span>
+      </div>
+      <div class="pwa-steps">
+        <div class="pwa-step-item">
+          <span class="step-badge">1</span>
+          <span>Tap the Safari <strong>Share</strong> button
+            <span class="inline-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                <polyline points="16 6 12 2 8 6"/>
+                <line x1="12" y1="2" x2="12" y2="15"/>
+              </svg>
+            </span> at the bottom.
+          </span>
+        </div>
+        <div class="pwa-step-item">
+          <span class="step-badge">2</span>
+          <span>Scroll down and tap <strong>Add to Home Screen</strong>.</span>
+        </div>
+        <div class="pwa-step-item">
+          <span class="step-badge">3</span>
+          <span>Tap <strong>Add</strong> in the top right.</span>
+        </div>
+      </div>
+      <div class="pwa-note">
+        💡 Bookmarking this gateway ensures your app connects permanently across all server restarts!
+      </div>
+    </div>
+
+    <!-- Primary Action Button -->
+    <button type="button" class="btn-action" id="btn-primary" onclick="handlePrimaryAction()">
+      <span id="btn-primary-text">Checking Connection...</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
     </button>
 
-    <div class="countdown-bar" id="countdown-bar" style="display: none;">
-      <div class="countdown-progress" id="countdown-progress"></div>
+    <!-- Countdown Progress Bar -->
+    <div class="countdown-container" id="countdown-container">
+      <div class="countdown-label">
+        <span id="countdown-text">Launching in 8s...</span>
+        <button type="button" class="countdown-pause" id="countdown-pause-btn" onclick="togglePauseCountdown()">Pause</button>
+      </div>
+      <div class="countdown-bar">
+        <div class="countdown-progress" id="countdown-progress"></div>
+      </div>
     </div>
 
     <button type="button" class="details-toggle" onclick="toggleAdvanced()">
@@ -236,7 +396,7 @@
       <input type="url" id="override-url" placeholder="https://xxxx.trycloudflare.com">
       <label for="override-key">Access Key (#key=):</label>
       <input type="text" id="override-key" placeholder="Enter EASY_ACCESS_KEY">
-      <button type="button" class="btn-action" style="min-height: 38px; font-size: 0.8125rem;" onclick="applyOverride()">
+      <button type="button" class="btn-action" style="min-height: 40px; font-size: 0.8125rem;" onclick="applyOverride()">
         Connect Directly
       </button>
     </div>
@@ -247,10 +407,16 @@
     const GIST_ID = '412b280e0ce30726c677726a477544c4';
     const GIST_USER = 'uzair-aftab';
 
+    // Standalone PWA Detection
+    const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+
     // State
     let activeProfile = 'sabahat';
-    let retryCountdownInterval = null;
-    let countdownRemaining = 5;
+    let targetTunnelUrl = null;
+    let pendingContext = null;
+    let redirectCountdownInterval = null;
+    let countdownRemaining = 8;
+    let isPaused = false;
 
     // 1. Parse URL & Hash Parameters
     function parseCurrentContext() {
@@ -292,13 +458,16 @@
 
       const btnSabahat = document.getElementById('btn-sabahat');
       const btnUzair = document.getElementById('btn-uzair');
+      const btnPrimary = document.getElementById('btn-primary');
 
       if (profile === 'sabahat') {
         btnSabahat.className = 'profile-btn active sabahat';
         btnUzair.className = 'profile-btn uzair';
+        if (btnPrimary) btnPrimary.classList.remove('uzair-theme');
       } else {
         btnSabahat.className = 'profile-btn sabahat';
         btnUzair.className = 'profile-btn active uzair';
+        if (btnPrimary) btnPrimary.classList.add('uzair-theme');
       }
     }
 
@@ -308,13 +477,14 @@
       const dot = document.getElementById('status-dot');
       if (isError) {
         dot.style.background = '#f43f5e';
+        dot.classList.remove('pulse');
       } else {
         dot.style.background = '#10b981';
+        dot.classList.add('pulse');
       }
     }
 
     function redirectToTarget(tunnelUrl, subpath, searchParams, accessKey) {
-      // Build redirection destination
       const cleanTunnel = tunnelUrl.replace(/\/+$/, '');
       const cleanSubpath = subpath === '/' ? '' : subpath;
 
@@ -331,7 +501,7 @@
       if (!tunnelUrl || !tunnelUrl.startsWith('https://') || tunnelUrl.includes('offline')) return false;
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 2000);
+        const timeoutId = setTimeout(() => controller.abort(), 2500);
         const res = await fetch(`${tunnelUrl}/api/health`, {
           method: 'GET',
           signal: controller.signal,
@@ -366,7 +536,6 @@
         const res = await fetch(`https://api.github.com/gists/${GIST_ID}`, { headers });
 
         if (res.status === 304) {
-          // Not modified, use cached tunnel if any
           return localStorage.getItem('last_tunnel_url');
         }
 
@@ -385,10 +554,10 @@
           }
         }
       } catch (err) {
-        console.warn('api.github.com request failed, attempting unlisted raw fallback:', err);
+        console.warn('api.github.com request failed, attempting raw fallback:', err);
       }
 
-      // Tier 1b: Fallback to unlisted raw secret gist (bypasses GitHub API rate limit)
+      // Tier 1b: Fallback to unlisted raw secret gist
       try {
         const rawUrl = `https://gist.githubusercontent.com/${GIST_USER}/${GIST_ID}/raw/easy_tunnel.json?t=${Date.now()}`;
         const rawRes = await fetch(rawUrl, { cache: 'no-store' });
@@ -400,18 +569,71 @@
           }
         }
       } catch (rawErr) {
-        console.error('Raw gist fetch also failed:', rawErr);
+        console.error('Raw gist fetch failed:', rawErr);
       }
 
       return null;
     }
 
-    async function triggerDiscovery(manualTrigger = false) {
-      if (retryCountdownInterval) {
-        clearInterval(retryCountdownInterval);
-        retryCountdownInterval = null;
+    function handlePrimaryAction() {
+      if (targetTunnelUrl && pendingContext) {
+        // Stop timer and jump immediately
+        if (redirectCountdownInterval) clearInterval(redirectCountdownInterval);
+        redirectToTarget(targetTunnelUrl, pendingContext.subpath, pendingContext.searchParams, pendingContext.key);
+      } else {
+        triggerDiscovery(true);
       }
-      document.getElementById('countdown-bar').style.display = 'none';
+    }
+
+    function togglePauseCountdown() {
+      isPaused = !isPaused;
+      const pauseBtn = document.getElementById('countdown-pause-btn');
+      pauseBtn.textContent = isPaused ? 'Resume' : 'Pause';
+    }
+
+    function startPwaRedirectCountdown(tunnelUrl, ctx) {
+      targetTunnelUrl = tunnelUrl;
+      pendingContext = ctx;
+
+      // Update button to Launch Revision Now
+      const btnText = document.getElementById('btn-primary-text');
+      btnText.textContent = 'Launch Revision Now';
+
+      // Show install guide and countdown container
+      document.getElementById('pwa-guide-box').style.display = 'block';
+      const container = document.getElementById('countdown-container');
+      const progress = document.getElementById('countdown-progress');
+      const label = document.getElementById('countdown-text');
+      container.style.display = 'block';
+
+      countdownRemaining = 8;
+      label.textContent = `Launching in ${countdownRemaining}s...`;
+      progress.style.width = '100%';
+
+      if (redirectCountdownInterval) clearInterval(redirectCountdownInterval);
+
+      redirectCountdownInterval = setInterval(() => {
+        if (isPaused) return;
+
+        countdownRemaining -= 1;
+        const pct = (countdownRemaining / 8) * 100;
+        progress.style.width = `${Math.max(0, pct)}%`;
+        label.textContent = `Launching in ${countdownRemaining}s...`;
+
+        if (countdownRemaining <= 0) {
+          clearInterval(redirectCountdownInterval);
+          redirectCountdownInterval = null;
+          redirectToTarget(tunnelUrl, ctx.subpath, ctx.searchParams, ctx.key);
+        }
+      }, 1000);
+    }
+
+    async function triggerDiscovery(manualTrigger = false) {
+      if (redirectCountdownInterval) {
+        clearInterval(redirectCountdownInterval);
+        redirectCountdownInterval = null;
+      }
+      document.getElementById('countdown-container').style.display = 'none';
 
       const ctx = parseCurrentContext();
       selectProfile(ctx.profile);
@@ -422,23 +644,22 @@
       if (document.getElementById('override-url')) document.getElementById('override-url').value = cachedUrl;
       if (document.getElementById('override-key')) document.getElementById('override-key').value = cachedKey;
 
-      setStatus('Probing Tunnel...', 'Testing last known connection...', false);
+      setStatus('Probing Tunnel...', 'Testing connection to study companion...', false);
 
-      // Tier 0: Check cached tunnel URL directly (0 GitHub API calls)
+      // Tier 0: Check cached tunnel URL directly
       if (cachedUrl && !cachedUrl.includes('offline')) {
         const isAlive = await probeHealth(cachedUrl);
         if (isAlive) {
-          redirectToTarget(cachedUrl, ctx.subpath, ctx.searchParams, ctx.key);
+          handleActiveTunnel(cachedUrl, ctx);
           return;
         }
       }
 
       // Tier 1: Check GitHub Secret Gist
-      setStatus('Checking Gateway Gist...', 'Retrieving fresh tunnel URL from secret gist...', false);
+      setStatus('Checking Gateway Gist...', 'Retrieving live server address...', false);
       const freshUrl = await fetchGistTunnelUrl();
       if (freshUrl && !freshUrl.includes('offline')) {
-        // Active tunnel retrieved from secret gist -> redirect directly!
-        redirectToTarget(freshUrl, ctx.subpath, ctx.searchParams, ctx.key);
+        handleActiveTunnel(freshUrl, ctx);
         return;
       }
 
@@ -448,25 +669,42 @@
         "Uzair's laptop is currently asleep or the server launcher is starting. Auto-retrying...",
         true
       );
-      startCountdown();
+      document.getElementById('btn-primary-text').textContent = 'Retry Connection';
+      startSleepRetryCountdown();
     }
 
-    function startCountdown() {
-      countdownRemaining = 5;
-      const bar = document.getElementById('countdown-bar');
+    function handleActiveTunnel(tunnelUrl, ctx) {
+      setStatus('Companion Online', 'Connected to live study companion!', false);
+
+      if (isStandalone) {
+        // Instant 0ms launch when launched from Home Screen PWA!
+        redirectToTarget(tunnelUrl, ctx.subpath, ctx.searchParams, ctx.key);
+      } else {
+        // Non-standalone mobile/browser: Display 8-second install guide & countdown
+        startPwaRedirectCountdown(tunnelUrl, ctx);
+      }
+    }
+
+    function startSleepRetryCountdown() {
+      let sleepCountdown = 5;
+      const container = document.getElementById('countdown-container');
       const progress = document.getElementById('countdown-progress');
-      bar.style.display = 'block';
+      const label = document.getElementById('countdown-text');
+      const pauseBtn = document.getElementById('countdown-pause-btn');
+      pauseBtn.style.display = 'none';
+      container.style.display = 'block';
 
-      if (retryCountdownInterval) clearInterval(retryCountdownInterval);
+      if (redirectCountdownInterval) clearInterval(redirectCountdownInterval);
 
-      retryCountdownInterval = setInterval(() => {
-        countdownRemaining -= 1;
-        const pct = (countdownRemaining / 5) * 100;
+      redirectCountdownInterval = setInterval(() => {
+        sleepCountdown -= 1;
+        const pct = (sleepCountdown / 5) * 100;
         progress.style.width = `${pct}%`;
+        label.textContent = `Auto-retrying in ${sleepCountdown}s...`;
 
-        if (countdownRemaining <= 0) {
-          clearInterval(retryCountdownInterval);
-          retryCountdownInterval = null;
+        if (sleepCountdown <= 0) {
+          clearInterval(redirectCountdownInterval);
+          redirectCountdownInterval = null;
           triggerDiscovery();
         }
       }, 1000);
