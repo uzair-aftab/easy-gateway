@@ -328,14 +328,15 @@
     }
 
     async function probeHealth(tunnelUrl) {
-      if (!tunnelUrl || !tunnelUrl.startsWith('https://')) return false;
+      if (!tunnelUrl || !tunnelUrl.startsWith('https://') || tunnelUrl.includes('offline')) return false;
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 2000);
+        const timeoutId = setTimeout(() => controller.abort(), 4000);
         const res = await fetch(`${tunnelUrl}/api/health`, {
           method: 'GET',
           signal: controller.signal,
           headers: { 'Accept': 'application/json' },
+          mode: 'cors',
         });
         clearTimeout(timeoutId);
         if (res.ok) {
@@ -424,7 +425,7 @@
       setStatus('Probing Tunnel...', 'Testing last known connection...', false);
 
       // Tier 0: Check cached tunnel URL directly (0 GitHub API calls)
-      if (cachedUrl) {
+      if (cachedUrl && !cachedUrl.includes('offline')) {
         const isAlive = await probeHealth(cachedUrl);
         if (isAlive) {
           redirectToTarget(cachedUrl, ctx.subpath, ctx.searchParams, ctx.key);
@@ -435,12 +436,10 @@
       // Tier 1: Check GitHub Secret Gist
       setStatus('Checking Gateway Gist...', 'Retrieving fresh tunnel URL from secret gist...', false);
       const freshUrl = await fetchGistTunnelUrl();
-      if (freshUrl && freshUrl !== cachedUrl) {
-        const isAlive = await probeHealth(freshUrl);
-        if (isAlive) {
-          redirectToTarget(freshUrl, ctx.subpath, ctx.searchParams, ctx.key);
-          return;
-        }
+      if (freshUrl && !freshUrl.includes('offline')) {
+        // Active tunnel retrieved from secret gist -> redirect directly!
+        redirectToTarget(freshUrl, ctx.subpath, ctx.searchParams, ctx.key);
+        return;
       }
 
       // Host Laptop Sleeping State
