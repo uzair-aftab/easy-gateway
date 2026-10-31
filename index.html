@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Easy — Canadian PEBC Revision Gateway</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Easy PEBC">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #090d16;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      -webkit-font-smoothing: antialiased;
+    }
+    .card {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 1.25rem;
+      padding: 2rem;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+      text-align: center;
+    }
+    .logo-container {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 4rem;
+      height: 4rem;
+      border-radius: 1rem;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      margin-bottom: 1.25rem;
+    }
+    .logo-pulse {
+      animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse-ring {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(0.96); }
+    }
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      margin-bottom: 0.5rem;
+      color: #f1f5f9;
+    }
+    p.subtitle {
+      font-size: 0.875rem;
+      color: #94a3b8;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      margin-bottom: 1.25rem;
+      background: #1e293b;
+      color: #cbd5e1;
+      border: 1px solid #334155;
+    }
+    .badge-dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 9999px;
+      background: #f59e0b;
+      animation: blink 1.5s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .profile-switcher {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      background: #020617;
+      padding: 0.25rem;
+      border-radius: 0.75rem;
+      border: 1px solid #1e293b;
+      margin-bottom: 1.5rem;
+    }
+    .profile-btn {
+      padding: 0.5rem;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      background: transparent;
+      color: #64748b;
+      transition: all 0.15s ease;
+    }
+    .profile-btn.active.sabahat {
+      background: #10b981;
+      color: #022c22;
+    }
+    .profile-btn.active.uzair {
+      background: #0ea5e9;
+      color: #082f49;
+    }
+    .btn-action {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 48px;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      border-radius: 0.75rem;
+      border: none;
+      cursor: pointer;
+      background: #10b981;
+      color: #022c22;
+      transition: background-color 0.15s ease;
+      text-decoration: none;
+    }
+    .btn-action:hover {
+      background: #059669;
+    }
+    .countdown-bar {
+      height: 4px;
+      width: 100%;
+      background: #1e293b;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+    .countdown-progress {
+      height: 100%;
+      background: #10b981;
+      width: 100%;
+      transform-origin: left;
+    }
+    .details-toggle {
+      margin-top: 1.25rem;
+      font-size: 0.75rem;
+      color: #64748b;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .advanced-panel {
+      display: none;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px dashed #1e293b;
+      text-align: left;
+    }
+    .advanced-panel.visible {
+      display: block;
+    }
+    .advanced-panel label {
+      display: block;
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-bottom: 0.25rem;
+    }
+    .advanced-panel input {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 0.8125rem;
+      border-radius: 0.5rem;
+      border: 1px solid #334155;
+      background: #020617;
+      color: #f8fafc;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="card" id="gateway-card">
+    <div class="logo-container logo-pulse" id="status-icon">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+      </svg>
+    </div>
+
+    <div class="badge-status" id="status-badge">
+      <span class="badge-dot" id="status-dot"></span>
+      <span id="status-text">Connecting to Study Companion...</span>
+    </div>
+
+    <h1 id="title-text">Easy PEBC Revision</h1>
+    <p class="subtitle" id="subtitle-text">
+      Locating live Cloudflare tunnel for Sabahat Mehmood &amp; Uzair Aftab...
+    </p>
+
+    <div class="profile-switcher" role="group" aria-label="Target Profile">
+      <button type="button" class="profile-btn active sabahat" id="btn-sabahat" onclick="selectProfile('sabahat')">
+        👩‍⚕️ Sabahat
+      </button>
+      <button type="button" class="profile-btn uzair" id="btn-uzair" onclick="selectProfile('uzair')">
+        👨‍💻 Uzair
+      </button>
+    </div>
+
+    <button type="button" class="btn-action" id="btn-primary" onclick="triggerDiscovery(true)">
+      Retry Connection
+    </button>
+
+    <div class="countdown-bar" id="countdown-bar" style="display: none;">
+      <div class="countdown-progress" id="countdown-progress"></div>
+    </div>
+
+    <button type="button" class="details-toggle" onclick="toggleAdvanced()">
+      Manual Tunnel Override
+    </button>
+
+    <div class="advanced-panel" id="advanced-panel">
+      <label for="override-url">Direct Cloudflare Tunnel URL:</label>
+      <input type="url" id="override-url" placeholder="https://xxxx.trycloudflare.com">
+      <label for="override-key">Access Key (#key=):</label>
+      <input type="text" id="override-key" placeholder="Enter EASY_ACCESS_KEY">
+      <button type="button" class="btn-action" style="min-height: 38px; font-size: 0.8125rem;" onclick="applyOverride()">
+        Connect Directly
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Configuration placeholder injected during deployment
+    const GIST_ID = '412b280e0ce30726c677726a477544c4';
+    const GIST_USER = 'uzair-aftab';
+
+    // State
+    let activeProfile = 'sabahat';
+    let retryCountdownInterval = null;
+    let countdownRemaining = 5;
+
+    // 1. Parse URL & Hash Parameters
+    function parseCurrentContext() {
+      const url = new URL(window.location.href);
+      const params = url.searchParams;
+
+      // Capability Key from URL hash
+      let key = '';
+      if (window.location.hash.startsWith('#key=')) {
+        key = window.location.hash.substring(5).trim();
+        if (key) {
+          localStorage.setItem('easy_access_key', key);
+        }
+      }
+      if (!key) {
+        key = localStorage.getItem('easy_access_key') || '';
+      }
+
+      // Profile priority: URL query param > localStorage > default sabahat
+      const urlProfile = params.get('profile');
+      if (urlProfile === 'uzair' || urlProfile === 'sabahat') {
+        activeProfile = urlProfile;
+        localStorage.setItem('easy_preferred_profile', urlProfile);
+      } else {
+        activeProfile = localStorage.getItem('easy_preferred_profile') || 'sabahat';
+      }
+
+      // Target path: Preserve subpath beyond /easy-gateway/
+      let subpath = url.pathname.replace(/^\/easy-gateway\/?/, '/');
+      if (!subpath.startsWith('/')) subpath = '/' + subpath;
+      if (subpath === '/404.html' || subpath === '/index.html') subpath = '/';
+
+      return { key, profile: activeProfile, subpath, searchParams: params };
+    }
+
+    function selectProfile(profile) {
+      activeProfile = profile;
+      localStorage.setItem('easy_preferred_profile', profile);
+
+      const btnSabahat = document.getElementById('btn-sabahat');
+      const btnUzair = document.getElementById('btn-uzair');
+
+      if (profile === 'sabahat') {
+        btnSabahat.className = 'profile-btn active sabahat';
+        btnUzair.className = 'profile-btn uzair';
+      } else {
+        btnSabahat.className = 'profile-btn sabahat';
+        btnUzair.className = 'profile-btn active uzair';
+      }
+    }
+
+    function setStatus(badgeText, subtitle, isError = false) {
+      document.getElementById('status-text').textContent = badgeText;
+      document.getElementById('subtitle-text').textContent = subtitle;
+      const dot = document.getElementById('status-dot');
+      if (isError) {
+        dot.style.background = '#f43f5e';
+      } else {
+        dot.style.background = '#10b981';
+      }
+    }
+
+    function redirectToTarget(tunnelUrl, subpath, searchParams, accessKey) {
+      // Build redirection destination
+      const cleanTunnel = tunnelUrl.replace(/\/+$/, '');
+      const cleanSubpath = subpath === '/' ? '' : subpath;
+
+      // Clone search params and guarantee profile is set
+      const destParams = new URLSearchParams(searchParams);
+      destParams.set('profile', activeProfile);
+
+      const destUrl = `${cleanTunnel}${cleanSubpath}?${destParams.toString()}${accessKey ? '#key=' + accessKey : ''}`;
+      setStatus('Redirecting...', `Connecting to ${cleanTunnel}...`, false);
+      window.location.replace(destUrl);
+    }
+
+    async function probeHealth(tunnelUrl) {
+      if (!tunnelUrl || !tunnelUrl.startsWith('https://')) return false;
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2000);
+        const res = await fetch(`${tunnelUrl}/api/health`, {
+          method: 'GET',
+          signal: controller.signal,
+          headers: { 'Accept': 'application/json' },
+        });
+        clearTimeout(timeoutId);
+        if (res.ok) {
+          const data = await res.json().catch(() => ({}));
+          return data.ok === true || res.status === 200;
+        }
+        return false;
+      } catch {
+        return false;
+      }
+    }
+
+    async function fetchGistTunnelUrl() {
+      if (!GIST_ID || GIST_ID.includes('412b280e0ce30726c677726a477544c4')) {
+        console.warn('Gist ID is not configured.');
+        return null;
+      }
+
+      const cachedEtag = localStorage.getItem('gist_etag');
+      const headers = { 'Accept': 'application/vnd.github.v3+json' };
+      if (cachedEtag) {
+        headers['If-None-Match'] = cachedEtag;
+      }
+
+      try {
+        // Tier 1a: Conditional fetch to api.github.com
+        const res = await fetch(`https://api.github.com/gists/${GIST_ID}`, { headers });
+
+        if (res.status === 304) {
+          // Not modified, use cached tunnel if any
+          return localStorage.getItem('last_tunnel_url');
+        }
+
+        if (res.ok) {
+          const newEtag = res.headers.get('ETag');
+          if (newEtag) localStorage.setItem('gist_etag', newEtag);
+
+          const gistData = await res.json();
+          const tunnelFile = gistData.files && gistData.files['easy_tunnel.json'];
+          if (tunnelFile && tunnelFile.content) {
+            const parsed = JSON.parse(tunnelFile.content);
+            if (parsed.tunnelUrl) {
+              localStorage.setItem('last_tunnel_url', parsed.tunnelUrl);
+              return parsed.tunnelUrl;
+            }
+          }
+        }
+      } catch (err) {
+        console.warn('api.github.com request failed, attempting unlisted raw fallback:', err);
+      }
+
+      // Tier 1b: Fallback to unlisted raw secret gist (bypasses GitHub API rate limit)
+      try {
+        const rawUrl = `https://gist.githubusercontent.com/${GIST_USER}/${GIST_ID}/raw/easy_tunnel.json?t=${Date.now()}`;
+        const rawRes = await fetch(rawUrl, { cache: 'no-store' });
+        if (rawRes.ok) {
+          const parsed = await rawRes.json();
+          if (parsed.tunnelUrl) {
+            localStorage.setItem('last_tunnel_url', parsed.tunnelUrl);
+            return parsed.tunnelUrl;
+          }
+        }
+      } catch (rawErr) {
+        console.error('Raw gist fetch also failed:', rawErr);
+      }
+
+      return null;
+    }
+
+    async function triggerDiscovery(manualTrigger = false) {
+      if (retryCountdownInterval) {
+        clearInterval(retryCountdownInterval);
+        retryCountdownInterval = null;
+      }
+      document.getElementById('countdown-bar').style.display = 'none';
+
+      const ctx = parseCurrentContext();
+      selectProfile(ctx.profile);
+
+      // Pre-fill override inputs if open
+      const cachedKey = localStorage.getItem('easy_access_key') || '';
+      const cachedUrl = localStorage.getItem('last_tunnel_url') || '';
+      if (document.getElementById('override-url')) document.getElementById('override-url').value = cachedUrl;
+      if (document.getElementById('override-key')) document.getElementById('override-key').value = cachedKey;
+
+      setStatus('Probing Tunnel...', 'Testing last known connection...', false);
+
+      // Tier 0: Check cached tunnel URL directly (0 GitHub API calls)
+      if (cachedUrl) {
+        const isAlive = await probeHealth(cachedUrl);
+        if (isAlive) {
+          redirectToTarget(cachedUrl, ctx.subpath, ctx.searchParams, ctx.key);
+          return;
+        }
+      }
+
+      // Tier 1: Check GitHub Secret Gist
+      setStatus('Checking Gateway Gist...', 'Retrieving fresh tunnel URL from secret gist...', false);
+      const freshUrl = await fetchGistTunnelUrl();
+      if (freshUrl && freshUrl !== cachedUrl) {
+        const isAlive = await probeHealth(freshUrl);
+        if (isAlive) {
+          redirectToTarget(freshUrl, ctx.subpath, ctx.searchParams, ctx.key);
+          return;
+        }
+      }
+
+      // Host Laptop Sleeping State
+      setStatus(
+        'Host Laptop Sleeping',
+        "Uzair's laptop is currently asleep or the server launcher is starting. Auto-retrying...",
+        true
+      );
+      startCountdown();
+    }
+
+    function startCountdown() {
+      countdownRemaining = 5;
+      const bar = document.getElementById('countdown-bar');
+      const progress = document.getElementById('countdown-progress');
+      bar.style.display = 'block';
+
+      if (retryCountdownInterval) clearInterval(retryCountdownInterval);
+
+      retryCountdownInterval = setInterval(() => {
+        countdownRemaining -= 1;
+        const pct = (countdownRemaining / 5) * 100;
+        progress.style.width = `${pct}%`;
+
+        if (countdownRemaining <= 0) {
+          clearInterval(retryCountdownInterval);
+          retryCountdownInterval = null;
+          triggerDiscovery();
+        }
+      }, 1000);
+    }
+
+    function toggleAdvanced() {
+      const panel = document.getElementById('advanced-panel');
+      panel.classList.toggle('visible');
+    }
+
+    function applyOverride() {
+      const urlInput = document.getElementById('override-url').value.trim();
+      const keyInput = document.getElementById('override-key').value.trim();
+
+      if (urlInput) {
+        localStorage.setItem('last_tunnel_url', urlInput);
+      }
+      if (keyInput) {
+        localStorage.setItem('easy_access_key', keyInput);
+      }
+
+      const ctx = parseCurrentContext();
+      redirectToTarget(urlInput || localStorage.getItem('last_tunnel_url'), ctx.subpath, ctx.searchParams, keyInput || ctx.key);
+    }
+
+    // Auto-init on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      parseCurrentContext();
+      triggerDiscovery();
+    });
+  </script>
+</body>
+</html>
