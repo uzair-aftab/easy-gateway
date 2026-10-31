@@ -350,7 +350,7 @@
     }
 
     async function fetchGistTunnelUrl() {
-      if (!GIST_ID || GIST_ID.includes('412b280e0ce30726c677726a477544c4')) {
+      if (!GIST_ID || GIST_ID.length < 10) {
         console.warn('Gist ID is not configured.');
         return null;
       }
