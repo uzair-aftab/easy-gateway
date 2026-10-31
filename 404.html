@@ -331,7 +331,7 @@
       if (!tunnelUrl || !tunnelUrl.startsWith('https://') || tunnelUrl.includes('offline')) return false;
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 4000);
+        const timeoutId = setTimeout(() => controller.abort(), 2000);
         const res = await fetch(`${tunnelUrl}/api/health`, {
           method: 'GET',
           signal: controller.signal,
